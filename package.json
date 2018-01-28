@@ -1,0 +1,23 @@
+{
+  "name": "@illgrenoble/guacamole-common-js",
+  "version": "0.9.14",
+  "description": "Guacamole common js as an NPM module",
+  "main": "guacamole.js",
+  "scripts": {
+    "build": "node build"
+  },
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "LICENSE",
+    "guacamole.js"
+  ],
+  "keywords": [
+    "guacamole"
+  ],
+  "author": "Jamie Hall <hall@ill.eu>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ILLGrenoble/guacamole-common-js/issues"
+  },"homepage": "https://github.com/ILLGrenoble/guacamole-common-js"
+}
