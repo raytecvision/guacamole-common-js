@@ -3,6 +3,7 @@
   "version": "0.9.14",
   "description": "Guacamole common js as an NPM module",
   "main": "guacamole.js",
+  "types": "guacamole.d.ts",
   "scripts": {
     "build": "node build"
   },
@@ -10,7 +11,9 @@
   "license": "MIT",
   "files": [
     "LICENSE",
-    "guacamole.js"
+    "guacamole.js",
+    "guacamole.d.ts",
+    "tsconfig.json"
   ],
   "keywords": [
     "guacamole"
