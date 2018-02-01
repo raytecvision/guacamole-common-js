@@ -5,7 +5,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * automatically handles incoming and outgoing Guacamole instructions via the
      * provided tunnel, updating its display using one or more canvas elements.
      */
-    export class Client {
+    class Client {
         /**
          * @param {Guacamole.Tunnel} tunnel The tunnel to use to send and receive
          *                                  Guacamole instructions.
@@ -29,7 +29,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Restores Guacamole.Client protocol and display state based on an opaque
          * object from a prior call to exportState(). The Guacamole.Client instance
-         * used to export that state need not be the same as this instance.
+         * used to that state need not be the same as this instance.
          *
          * @param {Object} state
          *     An opaque representation of Guacamole.Client state from a prior call
@@ -46,7 +46,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Returns the underlying display of this Guacamole.Client. The display
          * contains an Element which can be added to the DOM, causing the
          * display to become visible.
-         * 
+         *
          * @return {Guacamole.Display} The underlying display of this
          *                             Guacamole.Client.
          */
@@ -70,7 +70,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Sends a mouse event having the properties provided by the given mouse
          * state.
-         * 
+         *
          * @param {Guacamole.Mouse.State} mouseState The state of the mouse to send
          *                                           in the mouse event.
          */
@@ -79,7 +79,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Sends a key event having the given properties as if the user
          * pressed or released a key.
-         * 
+         *
          * @param {Boolean} pressed Whether the key is pressed (true) or released
          *                          (false).
          * @param {Number} keysym The keysym of the key being pressed or released.
@@ -88,7 +88,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Sends the current size of the screen.
-         * 
+         *
          * @param {Number} width The width of the screen.
          * @param {Number} height The height of the screen.
          */
@@ -97,7 +97,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Sets the clipboard of the remote client to the given text data.
          *
-         * @deprecated Use createClipboardStream() instead. 
+         * @deprecated Use createClipboardStream() instead.
          * @param {String} data The data to send as the clipboard contents.
          */
         setClipboard(data: string): void;
@@ -199,7 +199,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Acknowledge receipt of a blob on the stream with the given index.
-         * 
+         *
          * @param {Number} index The index of the stream associated with the
          *                       received blob.
          * @param {String} message A human-readable message describing the error
@@ -210,7 +210,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Given the index of a file, writes a blob of data to that file.
-         * 
+         *
          * @param {Number} index The index of the file to write to.
          * @param {String} data Base64-encoded data to write to the file.
          */
@@ -221,7 +221,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Guacamole connection will be notified via an "end" instruction that the
          * stream is closed, and the index will be made available for reuse in
          * future streams.
-         * 
+         *
          * @param {Number} index
          *     The index of the stream to end.
          */
@@ -229,7 +229,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired whenever the state of this Guacamole.Client changes.
-         * 
+         *
          * @event
          * @param {Number} state The new state of the client.
          */
@@ -237,7 +237,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired when the remote client sends a name update.
-         * 
+         *
          * @event
          * @param {String} name The new name of this client.
          */
@@ -246,7 +246,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Fired when an error is reported by the remote client, and the connection
          * is being closed.
-         * 
+         *
          * @event
          * @param {Guacamole.Status} status A status object which describes the
          *                                  error.
@@ -298,7 +298,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired when the clipboard of the remote client is changing.
-         * 
+         *
          * @event
          * @param {Guacamole.InputStream} stream The stream that will receive
          *                                       clipboard data from the server.
@@ -309,7 +309,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Fired when a file stream is created. The stream provided to this event
          * handler will contain its own event handlers for received data.
-         * 
+         *
          * @event
          * @param {Guacamole.InputStream} stream The stream that will receive data
          *                                       from the server.
@@ -335,7 +335,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Fired when a pipe stream is created. The stream provided to this event
          * handler will contain its own event handlers for received data;
-         * 
+         *
          * @event
          * @param {Guacamole.InputStream} stream The stream that will receive data
          *                                       from the server.
@@ -348,7 +348,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Fired whenever a sync instruction is received from the server, indicating
          * that the server is finished processing any input from the client and
          * has sent any results.
-         * 
+         *
          * @event
          * @param {Number} timestamp The timestamp associated with the sync
          *                           instruction.
@@ -362,15 +362,15 @@ declare module '@illgrenoble/guacamole-common-js' {
      * is a null implementation whose functions do nothing. Guacamole applications
      * should use {@link Guacamole.HTTPTunnel} instead, or implement their own tunnel based
      * on this one.
-     * 
+     *
      * @constructor
      * @see Guacamole.HTTPTunnel
      */
-    export class Tunnel {
+    class Tunnel {
 
         /**
          * The current state of this tunnel.
-         * 
+         *
          * @type {Number}
          */
         state: number;
@@ -379,7 +379,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * The maximum amount of time to wait for data to be received, in
          * milliseconds. If data is not received within this amount of time,
          * the tunnel is closed with an error. The default value is 15000.
-         * 
+         *
          * @type {Number}
          */
         receiveTimeout: number;
@@ -388,7 +388,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Connect to the tunnel with the given optional data. This data is
          * typically used for authentication. The format of data accepted is
          * up to the tunnel implementation.
-         * 
+         *
          * @param {String} data The data to send to the tunnel when connecting.
          */
         connect(data: string): void;
@@ -400,7 +400,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired whenever an error is encountered by the tunnel.
-         * 
+         *
          * @event
          * @param {Guacamole.Status} status A status object which describes the
          *                                  error.
@@ -409,7 +409,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired whenever the state of the tunnel changes.
-         * 
+         *
          * @event
          * @param {Number} state The new state of the client.
          */
@@ -417,7 +417,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired once for every complete Guacamole instruction received, in order.
-         * 
+         *
          * @event
          * @param {String} opcode The Guacamole instruction opcode.
          * @param {Array} parameters The parameters provided for the instruction,
@@ -429,7 +429,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Send the given message through the tunnel to the service on the other
          * side. All messages are guaranteed to be received in the order sent.
-         * 
+         *
          * @param {...*} elements
          *     The elements of the message to send to the service on the other side
          *     of the tunnel.
@@ -450,7 +450,7 @@ declare module '@illgrenoble/guacamole-common-js' {
     /**
      * Guacamole Tunnel implemented over WebSocket via XMLHttpRequest.
      */
-    export class WebSocketTunnel extends Tunnel {
+    class WebSocketTunnel extends Tunnel {
         /**
          * @param {String} tunnelURL The URL of the WebSocket tunneling service.
          */
@@ -464,7 +464,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * received, or no tunnels remain, the error is passed directly out
      * through the onerror handler (if defined).
      */
-    export class ChainedTunnel extends Tunnel {
+    class ChainedTunnel extends Tunnel {
         /**
          * @param {...*} tunnelChain
          *     The tunnels to use, in order of priority.
@@ -475,7 +475,7 @@ declare module '@illgrenoble/guacamole-common-js' {
     /**
      * Guacamole Tunnel implemented over HTTP via XMLHttpRequest.
      */
-    export class HTTPTunnel extends Tunnel {
+    class HTTPTunnel extends Tunnel {
         /**
          * @param {String} tunnelURL
          *     The URL of the HTTP tunneling service.
@@ -498,7 +498,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * received via HTTP. Instructions within the file are parsed and handled as
      * quickly as possible, while the file is being downloaded.
      */
-    export class StaticHTTPTunnel extends Tunnel {
+    class StaticHTTPTunnel extends Tunnel {
         /**
          * @param {String} url
          *     The URL of a Guacamole protocol dump.
@@ -522,7 +522,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * handling a provided Guacamole.InputStream. Data received along the provided
      * stream is to be played back immediately.
      */
-    export class AudioPlayer {
+    class AudioPlayer {
         sync(): void;
         /**
          * Determines whether the given mimetype is supported by any built-in
@@ -578,7 +578,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * audio. This player relies only on the Web Audio API and does not require any
      * browser-level support for its audio formats.
      */
-    export class RawAudioPlayer extends AudioPlayer {
+    class RawAudioPlayer extends AudioPlayer {
         /**
           * @augments Guacamole.AudioPlayer
           * @param {Guacamole.InputStream} stream
@@ -630,7 +630,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * some means of handling this Guacamole.OutputStream. Data produced by the
      * recorder is to be sent along the provided stream immediately.
      */
-    export class AudioRecorder {
+    class AudioRecorder {
         /**
           * Callback which is invoked when the audio recording process has stopped
           * and the underlying Guacamole stream has been closed normally. Audio will
@@ -715,7 +715,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      *     must be a "audio/L8" or "audio/L16" mimetype with necessary parameters,
      *     such as: "audio/L16;rate=44100,channels=2".
      */
-    export class RawAudioRecorder extends AudioRecorder {
+    class RawAudioRecorder extends AudioRecorder {
         /**
          * @augments Guacamole.AudioRecorder
          * @param {Guacamole.OutputStream} stream
@@ -762,7 +762,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * Browser and keyboard layout variation is abstracted away, providing events
      * which represent keys as their corresponding X11 keysym.
      */
-    export class Keyboard {
+    class Keyboard {
         /**
          * @param {Element} element The Element to use to provide keyboard events.
          */
@@ -770,7 +770,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Fired whenever the user presses a key with the element associated
          * with this Guacamole.Keyboard in focus.
-         * 
+         *
          * @event
          * @param {Number} keysym The keysym of the key being pressed.
          * @return {Boolean} true if the key event should be allowed through to the
@@ -781,7 +781,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Fired whenever the user releases a key with the element associated
          * with this Guacamole.Keyboard in focus.
-         * 
+         *
          * @event
          * @param {Number} keysym The keysym of the key being released.
          */
@@ -792,7 +792,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * repeat for the pressed key will start after a delay if that key is
          * not a modifier. The return value of this function depends on the
          * return value of the keydown event handler, if any.
-         * 
+         *
          * @param {Number} keysym The keysym of the key to press.
          * @return {Boolean} true if event should NOT be canceled, false otherwise.
          */
@@ -800,7 +800,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Marks a key as released, firing the keyup event if registered.
-         * 
+         *
          * @param {Number} keysym The keysym of the key to release.
          */
         release(keysym: number): void;
@@ -819,13 +819,13 @@ declare module '@illgrenoble/guacamole-common-js' {
      * are executed is guaranteed to be in the same order as their corresponding
      * functions are called.
      */
-    export class Display {
+    class Display {
 
         /**
          * The X coordinate of the hotspot of the mouse cursor. The hotspot is
          * the relative location within the image of the mouse cursor at which
          * each click occurs.
-         * 
+         *
          * @type {Number}
          */
         cursorHotspotX: number;
@@ -834,7 +834,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * The Y coordinate of the hotspot of the mouse cursor. The hotspot is
          * the relative location within the image of the mouse cursor at which
          * each click occurs.
-         * 
+         *
          * @type {Number}
          */
         cursorHotspotY: number;
@@ -844,7 +844,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * necessarily the location of the actual mouse - it refers only to
          * the location of the cursor image within the Guacamole display, as
          * last set by moveCursor().
-         * 
+         *
          * @type {Number}
          */
         cursorX: number;
@@ -854,7 +854,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * necessarily the location of the actual mouse - it refers only to
          * the location of the cursor image within the Guacamole display, as
          * last set by moveCursor().
-         * 
+         *
          * @type {Number}
          */
         cursorY: number;
@@ -862,7 +862,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Fired when the default layer (and thus the entire Guacamole display)
          * is resized.
-         * 
+         *
          * @event
          * @param {Number} width The new width of the Guacamole display.
          * @param {Number} height The new height of the Guacamole display.
@@ -873,7 +873,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Fired whenever the local cursor image is changed. This can be used to
          * implement special handling of the client-side cursor, or to override
          * the default use of a software cursor layer.
-         * 
+         *
          * @event
          * @param {HTMLCanvasElement} canvas The cursor image.
          * @param {Number} x The X-coordinate of the cursor hotspot.
@@ -883,21 +883,21 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Returns the element which contains the Guacamole display.
-         * 
+         *
          * @return {Element} The element containing the Guacamole display.
          */
         getElement(): any;
 
         /**
          * Returns the width of this display.
-         * 
+         *
          * @return {Number} The width of this display;
          */
         getWidth(): number;
 
         /**
          * Returns the height of this display.
-         * 
+         *
          * @return {Number} The height of this display;
          */
         getHeight(): number;
@@ -907,7 +907,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * has at least one layer. Other layers can optionally be created within
          * this layer, but the default layer cannot be removed and is the absolute
          * ancestor of all other layers.
-         * 
+         *
          * @return {Guacamole.Display.VisibleLayer} The default layer.
          */
         getDefaultLayer(): Display.VisibleLayer;
@@ -916,7 +916,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Returns the cursor layer of this display. Each Guacamole display contains
          * a layer for the image of the mouse cursor. This layer is a special case
          * and exists above all other layers, similar to the hardware mouse cursor.
-         * 
+         *
          * @return {Guacamole.Display.VisibleLayer} The cursor layer.
          */
         getCursorLayer(): Display.VisibleLayer;
@@ -925,7 +925,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Creates a new layer. The new layer will be a direct child of the default
          * layer, but can be moved to be a child of any other layer. Layers returned
          * by this function are visible.
-         * 
+         *
          * @return {Guacamole.Display.VisibleLayer} The newly-created layer.
          */
         createLayer(): Display.VisibleLayer;
@@ -934,7 +934,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Creates a new buffer. Buffers are invisible, off-screen surfaces. They
          * are implemented in the same manner as layers, but do not provide the
          * same nesting semantics.
-         * 
+         *
          * @return {Guacamole.Layer} The newly-created buffer.
          */
         createBuffer(): Layer;
@@ -943,7 +943,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Flush all pending draw tasks, if possible, as a new frame. If the entire
          * frame is not ready, the flush will wait until all required tasks are
          * unblocked.
-         * 
+         *
          * @param {function} callback The function to call when this frame is
          *                            flushed. This may happen immediately, or
          *                            later when blocked tasks become unblocked.
@@ -953,7 +953,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Sets the hotspot and image of the mouse cursor displayed within the
          * Guacamole display.
-         * 
+         *
          * @param {Number} hotspotX The X coordinate of the cursor hotspot.
          * @param {Number} hotspotY The Y coordinate of the cursor hotspot.
          * @param {Guacamole.Layer} layer The source layer containing the data which
@@ -984,7 +984,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Sets the location of the local cursor to the given coordinates. For the
          * sake of responsiveness, this function performs its action immediately.
          * Cursor motion is not maintained within atomic frames.
-         * 
+         *
          * @param {Number} x The X coordinate to move the cursor to.
          * @param {Number} y The Y coordinate to move the cursor to.
          */
@@ -994,7 +994,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Changes the size of the given Layer to the given width and height.
          * Resizing is only attempted if the new size provided is actually different
          * from the current size.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to resize.
          * @param {Number} width The new width.
          * @param {Number} height The new height.
@@ -1004,7 +1004,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Draws the specified image at the given coordinates. The image specified
          * must already be loaded.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Number} x The destination X coordinate.
          * @param {Number} y The destination Y coordinate.
@@ -1036,7 +1036,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Draws the image at the specified URL at the given coordinates. The image
          * will be loaded automatically, and this and any future operations will
          * wait for the image to finish loading.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Number} x The destination X coordinate.
          * @param {Number} y The destination Y coordinate.
@@ -1049,7 +1049,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * will be loaded automatically, and this and any future operations will
          * wait for the video to finish loading. Future operations will not be
          * executed until the video finishes playing.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {String} mimetype The mimetype of the video to play.
          * @param {Number} duration The duration of the video in milliseconds.
@@ -1060,7 +1060,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Transfer a rectangle of image data from one Layer to this Layer using the
          * specified transfer function.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The Layer to copy image data from.
          * @param {Number} srcx The X coordinate of the upper-left corner of the
          *                      rectangle within the source Layer's coordinate
@@ -1084,7 +1084,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Put a rectangle of image data from one Layer to this Layer directly
          * without performing any alpha blending. Simply copy the data.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The Layer to copy image data from.
          * @param {Number} srcx The X coordinate of the upper-left corner of the
          *                      rectangle within the source Layer's coordinate
@@ -1108,7 +1108,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * operations of the source Layer that were pending at the time this
          * function was called are complete. This operation will not alter the
          * size of the source Layer even if its autosize property is set to true.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The Layer to copy image data from.
          * @param {Number} srcx The X coordinate of the upper-left corner of the
          *                      rectangle within the source Layer's coordinate
@@ -1128,7 +1128,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Starts a new path at the specified point.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Number} x The X coordinate of the point to draw.
          * @param {Number} y The Y coordinate of the point to draw.
@@ -1137,7 +1137,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Add the specified line to the current path.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Number} x The X coordinate of the endpoint of the line to draw.
          * @param {Number} y The Y coordinate of the endpoint of the line to draw.
@@ -1146,7 +1146,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Add the specified arc to the current path.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Number} x The X coordinate of the center of the circle which
          *                   will contain the arc.
@@ -1162,7 +1162,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Starts a new path at the specified point.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Number} cp1x The X coordinate of the first control point.
          * @param {Number} cp1y The Y coordinate of the first control point.
@@ -1176,14 +1176,14 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Closes the current path by connecting the end point with the start
          * point (if any) with a straight line.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          */
         close(layer: Layer): void;
 
         /**
           * Add the specified rectangle to the current path.
-          * 
+          *
           * @param {Guacamole.Layer} layer The layer to draw upon.
           * @param {Number} x The X coordinate of the upper-left corner of the
           *                   rectangle to draw.
@@ -1199,7 +1199,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as fillColor()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to affect.
          */
         clip(layer: Layer): void;
@@ -1209,7 +1209,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {String} cap The line cap style. Can be "round", "square",
          *                     or "butt".
@@ -1228,7 +1228,7 @@ declare module '@illgrenoble/guacamole-common-js' {
           * is implicitly closed. The current path can continue to be reused
           * for other operations (such as clip()) but a new path will be started
           * once a path drawing operation (path() or rect()) is used.
-          * 
+          *
           * @param {Guacamole.Layer} layer The layer to draw upon.
           * @param {Number} r The red component of the color to fill.
           * @param {Number} g The green component of the color to fill.
@@ -1243,7 +1243,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {String} cap The line cap style. Can be "round", "square",
          *                     or "butt".
@@ -1261,7 +1261,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          * @param {Guacamole.Layer} srcLayer The layer to use as a repeating pattern
          *                                   within the fill.
@@ -1270,14 +1270,14 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Push current layer state onto stack.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          */
         push(layer: Layer): void;
 
         /**
          * Pop layer state off stack.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          */
         pop(layer: Layer): void;
@@ -1285,7 +1285,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Reset the layer, clearing the stack, the current path, and any transform
          * matrix.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to draw upon.
          */
         reset(layer: Layer): void;
@@ -1293,7 +1293,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Sets the given affine transform (defined with six values from the
          * transform's matrix).
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to modify.
          * @param {Number} a The first value in the affine transform's matrix.
          * @param {Number} b The second value in the affine transform's matrix.
@@ -1307,7 +1307,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Applies the given affine transform (defined with six values from the
          * transform's matrix).
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to modify.
          * @param {Number} a The first value in the affine transform's matrix.
          * @param {Number} b The second value in the affine transform's matrix.
@@ -1320,13 +1320,13 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Sets the channel mask for future operations on this Layer.
-         * 
+         *
          * The channel mask is a Guacamole-specific compositing operation identifier
          * with a single bit representing each of four channels (in order): source
          * image where destination transparent, source where destination opaque,
          * destination where source transparent, and destination where source
          * opaque.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to modify.
          * @param {Number} mask The channel mask for future operations on this
          *                      Layer.
@@ -1338,7 +1338,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * limit is the maximum ratio of the size of the miter join to the stroke
          * width. If this ratio is exceeded, the miter will not be drawn for that
          * joint of the path.
-         * 
+         *
          * @param {Guacamole.Layer} layer The layer to modify.
          * @param {Number} limit The miter limit for stroke operations using the
          *                       miter join.
@@ -1443,13 +1443,13 @@ declare module '@illgrenoble/guacamole-common-js' {
 
     }
 
-    declare namespace Display {
+    namespace Display {
         /**
          * Simple container for Guacamole.Layer, allowing layers to be easily
          * repositioned and nested. This allows certain operations to be accelerated
          * through DOM manipulation, rather than raster operations.
          */
-        export class VisibleLayer {
+        class VisibleLayer {
 
             /**
              * The opacity of the layer container, where 255 is fully opaque and 0 is
@@ -1482,7 +1482,7 @@ declare module '@illgrenoble/guacamole-common-js' {
              * corresponds to a value from the transformation matrix, with the first
              * three values being the first row, and the last three values being the
              * second row. There are six values total.
-             * 
+             *
              * @type {Number[]}
              */
             matrix: number[];
@@ -1520,7 +1520,7 @@ declare module '@illgrenoble/guacamole-common-js' {
             /**
              * Moves the upper-left corner of this layer to the given X and Y
              * coordinate.
-             * 
+             *
              * @param {Number} x The X coordinate to move to.
              * @param {Number} y The Y coordinate to move to.
              */
@@ -1530,7 +1530,7 @@ declare module '@illgrenoble/guacamole-common-js' {
              * Moves the upper-left corner of this VisibleLayer to the given X and Y
              * coordinate, sets the Z stacking order, and reparents this VisibleLayer
              * to the given VisibleLayer.
-             * 
+             *
              * @param {Guacamole.Display.VisibleLayer} parent The parent to set.
              * @param {Number} x The X coordinate to move to.
              * @param {Number} y The Y coordinate to move to.
@@ -1541,7 +1541,7 @@ declare module '@illgrenoble/guacamole-common-js' {
             /**
              * Sets the opacity of this layer to the given value, where 255 is fully
              * opaque and 0 is fully transparent.
-             * 
+             *
              * @param {Number} a The opacity to set.
              */
             shade(a: number): void;
@@ -1555,7 +1555,7 @@ declare module '@illgrenoble/guacamole-common-js' {
             /**
              * Applies the given affine transform (defined with six values from the
              * transform's matrix).
-             * 
+             *
              * @param {Number} a The first value in the affine transform's matrix.
              * @param {Number} b The second value in the affine transform's matrix.
              * @param {Number} c The third value in the affine transform's matrix.
@@ -1575,7 +1575,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * on a touchscreen (tapping anywhere on the screen clicks at that point,
      * long-press to right-click).
      */
-    export class Mouse {
+    class Mouse {
         /**
          * @param {Element} element The Element to use to provide touch events.
          */
@@ -1616,21 +1616,21 @@ declare module '@illgrenoble/guacamole-common-js' {
 
     }
 
-    declare namespace Mouse {
+    namespace Mouse {
         /**
          * Simple container for properties describing the state of a mouse.
          */
-        export class State {
+        class State {
             /**
              * @param {Number} x The X position of the mouse pointer in pixels.
              * @param {Number} y The Y position of the mouse pointer in pixels.
-             * @param {Boolean} left Whether the left mouse button is pressed. 
-             * @param {Boolean} middle Whether the middle mouse button is pressed. 
-             * @param {Boolean} right Whether the right mouse button is pressed. 
+             * @param {Boolean} left Whether the left mouse button is pressed.
+             * @param {Boolean} middle Whether the middle mouse button is pressed.
+             * @param {Boolean} right Whether the right mouse button is pressed.
              * @param {Boolean} up Whether the up mouse button is pressed (the fourth
-             *                     button, usually part of a scroll wheel). 
+             *                     button, usually part of a scroll wheel).
              * @param {Boolean} down Whether the down mouse button is pressed (the fifth
-             *                       button, usually part of a scroll wheel). 
+             *                       button, usually part of a scroll wheel).
              */
             constructor(x: number, y: number, left: boolean, middle: boolean, right: boolean, up: boolean, down: boolean);
 
@@ -1673,7 +1673,7 @@ declare module '@illgrenoble/guacamole-common-js' {
             up: boolean;
 
             /**
-             * Whether the down mouse button is currently pressed. This is the fifth 
+             * Whether the down mouse button is currently pressed. This is the fifth
              * mouse button, associated with downward scrolling of the mouse scroll
              * wheel.
              * @type {Boolean}
@@ -1689,11 +1689,11 @@ declare module '@illgrenoble/guacamole-common-js' {
      * guaranteed to run in order, even if such an operation must wait for an image
      * to load before completing.
      */
-    export class Layer {
+    class Layer {
         /**
          * @param {Number} width The width of the Layer, in pixels. The canvas element
          *                       backing this Layer will be given this width.
-         *                       
+         *
          * @param {Number} height The height of the Layer, in pixels. The canvas element
          *                        backing this Layer will be given this height.
          */
@@ -1723,7 +1723,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * Changes the size of this Layer to the given width and height. Resizing
          * is only attempted if the new size provided is actually different from
          * the current size.
-         * 
+         *
          * @param {Number} newWidth The new width to assign to this Layer.
          * @param {Number} newHeight The new height to assign to this Layer.
          */
@@ -1732,7 +1732,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Draws the specified image at the given coordinates. The image specified
          * must already be loaded.
-         * 
+         *
          * @param {Number} x The destination X coordinate.
          * @param {Number} y The destination Y coordinate.
          * @param {Image} image The image to draw. Note that this is an Image
@@ -1743,7 +1743,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Transfer a rectangle of image data from one Layer to this Layer using the
          * specified transfer function.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The Layer to copy image data from.
          * @param {Number} srcx The X coordinate of the upper-left corner of the
          *                      rectangle within the source Layer's coordinate
@@ -1766,7 +1766,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Put a rectangle of image data from one Layer to this Layer directly
          * without performing any alpha blending. Simply copy the data.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The Layer to copy image data from.
          * @param {Number} srcx The X coordinate of the upper-left corner of the
          *                      rectangle within the source Layer's coordinate
@@ -1789,7 +1789,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * operations of the source Layer that were pending at the time this
          * function was called are complete. This operation will not alter the
          * size of the source Layer even if its autosize property is set to true.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The Layer to copy image data from.
          * @param {Number} srcx The X coordinate of the upper-left corner of the
          *                      rectangle within the source Layer's coordinate
@@ -1808,7 +1808,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Starts a new path at the specified point.
-         * 
+         *
          * @param {Number} x The X coordinate of the point to draw.
          * @param {Number} y The Y coordinate of the point to draw.
          */
@@ -1816,7 +1816,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Add the specified line to the current path.
-         * 
+         *
          * @param {Number} x The X coordinate of the endpoint of the line to draw.
          * @param {Number} y The Y coordinate of the endpoint of the line to draw.
          */
@@ -1824,7 +1824,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Add the specified arc to the current path.
-         * 
+         *
          * @param {Number} x The X coordinate of the center of the circle which
          *                   will contain the arc.
          * @param {Number} y The Y coordinate of the center of the circle which
@@ -1839,7 +1839,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Starts a new path at the specified point.
-         * 
+         *
          * @param {Number} cp1x The X coordinate of the first control point.
          * @param {Number} cp1y The Y coordinate of the first control point.
          * @param {Number} cp2x The X coordinate of the second control point.
@@ -1857,7 +1857,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Add the specified rectangle to the current path.
-         * 
+         *
          * @param {Number} x The X coordinate of the upper-left corner of the
          *                   rectangle to draw.
          * @param {Number} y The Y coordinate of the upper-left corner of the
@@ -1880,7 +1880,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {String} cap The line cap style. Can be "round", "square",
          *                     or "butt".
          * @param {String} join The line join style. Can be "round", "bevel",
@@ -1898,7 +1898,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {Number} r The red component of the color to fill.
          * @param {Number} g The green component of the color to fill.
          * @param {Number} b The blue component of the color to fill.
@@ -1912,7 +1912,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {String} cap The line cap style. Can be "round", "square",
          *                     or "butt".
          * @param {String} join The line join style. Can be "round", "bevel",
@@ -1929,7 +1929,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * is implicitly closed. The current path can continue to be reused
          * for other operations (such as clip()) but a new path will be started
          * once a path drawing operation (path() or rect()) is used.
-         * 
+         *
          * @param {Guacamole.Layer} srcLayer The layer to use as a repeating pattern
          *                                   within the fill.
          */
@@ -1954,7 +1954,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Sets the given affine transform (defined with six values from the
          * transform's matrix).
-         * 
+         *
          * @param {Number} a The first value in the affine transform's matrix.
          * @param {Number} b The second value in the affine transform's matrix.
          * @param {Number} c The third value in the affine transform's matrix.
@@ -1967,7 +1967,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Applies the given affine transform (defined with six values from the
          * transform's matrix).
-         * 
+         *
          * @param {Number} a The first value in the affine transform's matrix.
          * @param {Number} b The second value in the affine transform's matrix.
          * @param {Number} c The third value in the affine transform's matrix.
@@ -1979,13 +1979,13 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Sets the channel mask for future operations on this Layer.
-         * 
+         *
          * The channel mask is a Guacamole-specific compositing operation identifier
          * with a single bit representing each of four channels (in order): source
          * image where destination transparent, source where destination opaque,
          * destination where source transparent, and destination where source
          * opaque.
-         * 
+         *
          * @param {Number} mask The channel mask for future operations on this
          *                      Layer.
          */
@@ -1996,7 +1996,7 @@ declare module '@illgrenoble/guacamole-common-js' {
          * limit is the maximum ratio of the size of the miter join to the stroke
          * width. If this ratio is exceeded, the miter will not be drawn for that
          * joint of the path.
-         * 
+         *
          * @param {Number} limit The miter limit for stroke operations using the
          *                       miter join.
          */
@@ -2016,7 +2016,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * @param {String} [message]
      *     An optional human-readable message.
      */
-    export class Status {
+    class Status {
         /**
          * @param {Number} code
          *     The Guacamole status code, as defined by Guacamole.Status.Code.
@@ -2043,7 +2043,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * An input stream abstraction used by the Guacamole client to facilitate
      * transfer of files or other binary data.
      */
-    export class InputStream {
+    class InputStream {
         /**
          * @param {Guacamole.Client} client The client owning this stream.
          * @param {Number} index The index of this stream.
@@ -2052,7 +2052,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Acknowledges the receipt of a blob.
-         * 
+         *
          * @param {String} message A human-readable message describing the error
          *                         or status.
          * @param {Number} code The error code, if any, or 0 for success.
@@ -2064,7 +2064,7 @@ declare module '@illgrenoble/guacamole-common-js' {
     /**
      * Abstract stream which can receive data.
      */
-    export class OutputStream {
+    class OutputStream {
         /**
          * @param {Guacamole.Client} client The client owning this stream.
          * @param {Number} index The index of this stream.
@@ -2073,7 +2073,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Writes the given base64-encoded data to this stream as a blob.
-         * 
+         *
          * @param {String} data The base64-encoded data to send.
          */
         sendBlob(data: string): void;
@@ -2088,18 +2088,18 @@ declare module '@illgrenoble/guacamole-common-js' {
      * Integer pool which returns consistently increasing integers while integers
      * are in use, and previously-used integers when possible.
      */
-    export class IntegerPool {
+    class IntegerPool {
         /**
          * Returns the next available integer in the pool. If possible, a previously
          * used integer will be returned.
-         * 
+         *
          * @return {Number} The next available integer.
          */
         next(): number;
 
         /**
          * Frees the given integer, allowing it to be reused.
-         * 
+         *
          * @param {Number} integer The integer to free.
          */
         free(integer: number): void;
@@ -2111,7 +2111,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * strictly text data. Note that this object will overwrite any installed event
      * handlers on the given Guacamole.InputStream.
      */
-    export class StringReader {
+    class StringReader {
         /**
          * @param {Guacamole.InputStream} stream The stream that data will be read
          *                                       from.
@@ -2120,7 +2120,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired once for every blob of text data received.
-         * 
+         *
          * @event
          * @param {String} text The data packet received.
          */
@@ -2142,7 +2142,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * @param {Guacamole.OutputStream} stream
      *     The stream that data will be written to.
      */
-    export class BlobWriter {
+    class BlobWriter {
         /**
          * @param {Guacamole.OutputStream} stream
          *     The stream that data will be written to.
@@ -2221,7 +2221,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * Note that this object will overwrite any installed event handlers on the
      * given Guacamole.InputStream.
      */
-    export class BlobReader {
+    class BlobReader {
         /**
          * @param {Guacamole.InputStream} stream The stream that data will be read
          *                                       from.
@@ -2243,7 +2243,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired once for every blob of data received.
-         * 
+         *
          * @event
          * @param {Number} length The number of bytes received.
          */
@@ -2263,10 +2263,10 @@ declare module '@illgrenoble/guacamole-common-js' {
      * Note that this object will overwrite any installed event handlers on the
      * given Guacamole.InputStream.
      */
-    export class DataURIReader {
+    class DataURIReader {
         /**
          * @param {Guacamole.InputStream} stream
-         * @param mimetype 
+         * @param mimetype
          */
         constructor(stream: InputStream, mimetype: InputStream);
 
@@ -2292,7 +2292,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * An object used by the Guacamole client to house arbitrarily-many named
      * input and output streams.
      */
-    export class Object {
+    class Object {
         /**
          * @param {Guacamole.Client} client
          *     The client owning this object.
@@ -2324,7 +2324,7 @@ declare module '@illgrenoble/guacamole-common-js' {
         /**
          * Called when this object is being undefined. Once undefined, no further
          * communication involving this object may occur.
-         * 
+         *
          * @event
          */
         onundefine(): void;
@@ -2368,7 +2368,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * order, and decoding the result as JSON. Note that this object will overwrite
      * any installed event handlers on the given Guacamole.InputStream.
      */
-    export class JSONReader {
+    class JSONReader {
         /**
          * @param {Guacamole.InputStream} stream
          */
@@ -2394,7 +2394,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired once for every blob of data received.
-         * 
+         *
          * @event
          * @param {Number} length
          *     The number of characters received.
@@ -2413,7 +2413,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * A writer which automatically writes to the given output stream with text
      * data.
      */
-    export class StringWriter {
+    class StringWriter {
         /**
          * @param stream @param {Guacamole.OutputStream} stream The stream that data will be written to.
          */
@@ -2421,7 +2421,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Sends the given text.
-         * 
+         *
          * @param {String} text The text to send.
          */
         sendText(text: string): void;
@@ -2444,7 +2444,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * Simple Guacamole protocol parser that invokes an oninstruction event when
      * full instructions are available from data received via receive().
      */
-    export class Parser {
+    class Parser {
         /**
          * Appends the given instruction data packet to the internal buffer of
          * this Guacamole.Parser, executing all completed instructions at
@@ -2456,7 +2456,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired once for every complete Guacamole instruction received, in order.
-         * 
+         *
          * @event
          * @param {String} opcode The Guacamole instruction opcode.
          * @param {Array} parameters The parameters provided for the instruction,
@@ -2471,7 +2471,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * strictly received packets as array buffers. Note that this object will
      * overwrite any installed event handlers on the given Guacamole.InputStream.
      */
-    export class ArrayBufferReader {
+    class ArrayBufferReader {
         /**
          * @param {Guacamole.InputStream} stream The stream that data will be read
          */
@@ -2479,7 +2479,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Fired once for every blob of data received.
-         * 
+         *
          * @event
          * @param {ArrayBuffer} buffer The data packet received.
          */
@@ -2496,7 +2496,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * A writer which automatically writes to the given output stream with arbitrary
      * binary data, supplied as ArrayBuffers.
      */
-    export class ArrayBufferWriter {
+    class ArrayBufferWriter {
         /**
          * @param {Guacamole.OutputStream} stream The stream that data will be written to.
          */
@@ -2504,7 +2504,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
         /**
          * Sends the given data.
-         * 
+         *
          * @param {ArrayBuffer|TypedArray} data The data to send.
          */
         sendData(data: any): void;
@@ -2528,7 +2528,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * describes the number of bytes per sample, the number of channels, and the
      * overall sample rate.
      */
-    export class RawAudioFormat {
+    class RawAudioFormat {
         /**
          * @param {Guacamole.RawAudioFormat|Object} template
          *     The object whose properties should be copied into the corresponding
@@ -2559,7 +2559,7 @@ declare module '@illgrenoble/guacamole-common-js' {
      * the provided Guacamole.Display.VisibleLayer. Data received along the
      * provided stream is to be played back immediately.
      */
-    export class VideoPlayer {
+    class VideoPlayer {
         /**
           * Notifies this Guacamole.VideoPlayer that all video up to the current
           * point in time has been given via the underlying stream, and that any
