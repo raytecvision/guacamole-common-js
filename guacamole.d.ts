@@ -1443,7 +1443,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
     }
 
-    declare namespace Display {
+    export namespace Display {
         /**
          * Simple container for Guacamole.Layer, allowing layers to be easily
          * repositioned and nested. This allows certain operations to be accelerated
@@ -1616,7 +1616,7 @@ declare module '@illgrenoble/guacamole-common-js' {
 
     }
 
-    declare namespace Mouse {
+    export namespace Mouse {
         /**
          * Simple container for properties describing the state of a mouse.
          */
