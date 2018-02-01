@@ -1,6 +1,6 @@
 {
   "name": "@illgrenoble/guacamole-common-js",
-  "version": "0.9.14",
+  "version": "0.0.0",
   "description": "Guacamole common js as an NPM module",
   "main": "guacamole.js",
   "types": "guacamole.d.ts",
