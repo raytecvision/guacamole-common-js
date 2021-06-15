@@ -1,7 +1,7 @@
 {
-  "name": "@illgrenoble/guacamole-common-js",
+  "name": "@raytecvision/guacamole-common-js",
   "version": "0.0.1",
-  "description": "Guacamole common js as an NPM module",
+  "description": "guacamole-common-js TypeScript definitions as an NPM module",
   "main": "guacamole.js",
   "types": "guacamole.d.ts",
   "scripts": {
@@ -21,6 +21,6 @@
   "author": "Jamie Hall <hall@ill.eu>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ILLGrenoble/guacamole-common-js/issues"
-  },"homepage": "https://github.com/ILLGrenoble/guacamole-common-js"
+    "url": "https://github.com/raytecvision/guacamole-common-js/issues"
+  },"homepage": "https://github.com/raytecvision/guacamole-common-js"
 }

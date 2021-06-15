@@ -1,4 +1,4 @@
-declare module '@illgrenoble/guacamole-common-js' {
+declare module '@raytecvision/guacamole-common-js' {
 
 
     /**
@@ -1820,6 +1820,100 @@ declare module '@illgrenoble/guacamole-common-js' {
     }
 
     namespace Mouse {
+        /**
+         * Provides cross-browser absolute touch event translation for a given element.
+         *
+         * Touch events are translated into mouse events as if the touches occurred
+         * on a touchscreen (tapping anywhere on the screen clicks at that point,
+         * long-press to right-click).
+         */
+        class Touchscreen {
+            /**
+             * @param {Element} element The Element to use to provide touch events.
+             */
+            constructor(element: any);
+
+            /**
+             * Fired whenever a mouse button is effectively pressed. This can happen
+             * as part of a "mousedown" gesture initiated by the user by pressing one
+             * finger over the touchscreen element, as part of a "scroll" gesture
+             * initiated by dragging two fingers up or down, etc.
+             *
+             * @event
+             * @param {Guacamole.Mouse.State} state The current mouse state.
+             */
+            onmousedown(state: Mouse.State): void;
+
+            /**
+             * Fired whenever a mouse button is effectively released. This can happen
+             * as part of a "mouseup" gesture initiated by the user by removing the
+             * finger pressed against the touchscreen element, or as part of a "scroll"
+             * gesture initiated by dragging two fingers up or down, etc.
+             *
+             * @event
+             * @param {Guacamole.Mouse.State} state The current mouse state.
+             */
+            onmouseup(state: Mouse.State): void;
+
+            /**
+             * Fired whenever the user moves the mouse by dragging their finger over
+             * the touchscreen element. Note that unlike Guacamole.Mouse.Touchpad,
+             * dragging a finger over the touchscreen element will always cause
+             * the mouse button to be effectively down, as if clicking-and-dragging.
+             *
+             * @event
+             * @param {Guacamole.Mouse.State} state The current mouse state.
+             */
+            onmousemove(state: Mouse.State): void;
+
+        }
+        /**
+         * Provides cross-browser absolute touch event translation for a given element.
+         *
+         * Touch events are translated into mouse events as if the touches occurred
+         * on a touchscreen (tapping anywhere on the screen clicks at that point,
+         * long-press to right-click).
+         */
+        class Touchpad {
+            /**
+             * @param {Element} element The Element to use to provide touch events.
+             */
+            constructor(element: any);
+
+            /**
+             * Fired whenever a mouse button is effectively pressed. This can happen
+             * as part of a "mousedown" gesture initiated by the user by pressing one
+             * finger over the touchscreen element, as part of a "scroll" gesture
+             * initiated by dragging two fingers up or down, etc.
+             *
+             * @event
+             * @param {Guacamole.Mouse.State} state The current mouse state.
+             */
+            onmousedown(state: Mouse.State): void;
+
+            /**
+             * Fired whenever a mouse button is effectively released. This can happen
+             * as part of a "mouseup" gesture initiated by the user by removing the
+             * finger pressed against the touchscreen element, or as part of a "scroll"
+             * gesture initiated by dragging two fingers up or down, etc.
+             *
+             * @event
+             * @param {Guacamole.Mouse.State} state The current mouse state.
+             */
+            onmouseup(state: Mouse.State): void;
+
+            /**
+             * Fired whenever the user moves the mouse by dragging their finger over
+             * the touchscreen element. Note that unlike Guacamole.Mouse.Touchpad,
+             * dragging a finger over the touchscreen element will always cause
+             * the mouse button to be effectively down, as if clicking-and-dragging.
+             *
+             * @event
+             * @param {Guacamole.Mouse.State} state The current mouse state.
+             */
+            onmousemove(state: Mouse.State): void;
+
+        }
         /**
          * Simple container for properties describing the state of a mouse.
          */
