@@ -1,6 +1,5 @@
 declare module '@raytecvision/guacamole-common-js' {
 
-
     /**
      * Dynamic on-screen keyboard. Given the layout object for an on-screen
      * keyboard, this object will construct a clickable on-screen keyboard with its
@@ -61,7 +60,6 @@ declare module '@raytecvision/guacamole-common-js' {
          */
         reset(): void;
     }
-
 
     namespace OnScreenKeyboard {
 
@@ -186,7 +184,6 @@ declare module '@raytecvision/guacamole-common-js' {
 
 
     }
-
 
     /**
      * Guacamole protocol client. Given a {@link Guacamole.Tunnel},
@@ -651,7 +648,6 @@ declare module '@raytecvision/guacamole-common-js' {
         constructor(tunnelURL: string);
     }
 
-
     class SocketIOTunnel extends Tunnel {
         constructor(url: string, connectionOptions: any, eventChannel: string);
         /** 
@@ -900,7 +896,7 @@ declare module '@raytecvision/guacamole-common-js' {
          *     writing to the given stream, or null if support for the given mimetype
          *     is absent.
          */
-        static getInstance(stream: OutputStream, mimetype: string);
+        static getInstance(stream: OutputStream, mimetype: string): AudioRecorder;
     }
 
     /**
@@ -2341,6 +2337,10 @@ declare module '@raytecvision/guacamole-common-js' {
      * transfer of files or other binary data.
      */
     class InputStream {
+        index: string;
+        onblob: () => void;
+        onend: () => void;
+
         /**
          * @param {Guacamole.Client} client The client owning this stream.
          * @param {Number} index The index of this stream.
@@ -2362,6 +2362,9 @@ declare module '@raytecvision/guacamole-common-js' {
      * Abstract stream which can receive data.
      */
     class OutputStream {
+        index: string;
+        onack: () => void;
+
         /**
          * @param {Guacamole.Client} client The client owning this stream.
          * @param {Number} index The index of this stream.
@@ -2590,6 +2593,9 @@ declare module '@raytecvision/guacamole-common-js' {
      * input and output streams.
      */
     class Object {
+        static ROOT_STREAM: string;
+        static STREAM_INDEX_MIMETYPE: string;
+
         /**
          * @param {Guacamole.Client} client
          *     The client owning this object.
