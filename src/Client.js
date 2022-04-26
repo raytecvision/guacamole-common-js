@@ -25,8 +25,8 @@ var Guacamole = Guacamole || {};
  * provided tunnel, updating its display using one or more canvas elements.
  * 
  * @constructor
- * @param {Guacamole.Tunnel} tunnel The tunnel to use to send and receive
- *                                  Guacamole instructions.
+ * @param {!Guacamole.Tunnel} tunnel
+ *     The tunnel to use to send and receive Guacamole instructions.
  */
 Guacamole.Client = function(tunnel) {
 
@@ -46,7 +46,9 @@ Guacamole.Client = function(tunnel) {
 
     /**
      * Translation from Guacamole protocol line caps to Layer line caps.
+     *
      * @private
+     * @type {!Object.<number, string>}
      */
     var lineCap = {
         0: "butt",
@@ -56,7 +58,9 @@ Guacamole.Client = function(tunnel) {
 
     /**
      * Translation from Guacamole protocol line caps to Layer line caps.
+     *
      * @private
+     * @type {!Object.<number, string>}
      */
     var lineJoin = {
         0: "bevel",
@@ -68,7 +72,7 @@ Guacamole.Client = function(tunnel) {
      * The underlying Guacamole display.
      *
      * @private
-     * @type {Guacamole.Display}
+     * @type {!Guacamole.Display}
      */
     var display = new Guacamole.Display();
 
@@ -76,7 +80,7 @@ Guacamole.Client = function(tunnel) {
      * All available layers and buffers
      *
      * @private
-     * @type {Object.<Number, (Guacamole.Display.VisibleLayer|Guacamole.Layer)>}
+     * @type {!Object.<number, (Guacamole.Display.VisibleLayer|Guacamole.Layer)>}
      */
     var layers = {};
     
@@ -85,7 +89,7 @@ Guacamole.Client = function(tunnel) {
      * be empty, but audio players may be allocated by the server upon request.
      *
      * @private
-     * @type {Object.<Number, Guacamole.AudioPlayer>}
+     * @type {!Object.<number, Guacamole.AudioPlayer>}
      */
     var audioPlayers = {};
 
@@ -94,7 +98,7 @@ Guacamole.Client = function(tunnel) {
      * be empty, but video players may be allocated by the server upon request.
      *
      * @private
-     * @type {Object.<Number, Guacamole.VideoPlayer>}
+     * @type {!Object.<number, Guacamole.VideoPlayer>}
      */
     var videoPlayers = {};
 
@@ -109,7 +113,7 @@ Guacamole.Client = function(tunnel) {
      * Guacamole server.
      *
      * @private
-     * @type {Guacamole.Object[]}
+     * @type {!Guacamole.Object[]}
      */
     var objects = [];
 
@@ -138,7 +142,7 @@ Guacamole.Client = function(tunnel) {
      * effectively an independent, compressed snapshot of protocol and display
      * state. Invoking this function implicitly flushes the display.
      *
-     * @param {function} callback
+     * @param {!function} callback
      *     Callback which should be invoked once the state object is ready. The
      *     state object will be passed to the callback as the sole parameter.
      *     This callback may be invoked immediately, or later as the display
@@ -207,7 +211,7 @@ Guacamole.Client = function(tunnel) {
      * object from a prior call to exportState(). The Guacamole.Client instance
      * used to export that state need not be the same as this instance.
      *
-     * @param {Object} state
+     * @param {!object} state
      *     An opaque representation of Guacamole.Client state from a prior call
      *     to exportState().
      *
@@ -280,8 +284,8 @@ Guacamole.Client = function(tunnel) {
      * contains an Element which can be added to the DOM, causing the
      * display to become visible.
      * 
-     * @return {Guacamole.Display} The underlying display of this
-     *                             Guacamole.Client.
+     * @return {!Guacamole.Display}
+     *     The underlying display of this Guacamole.Client.
      */
     this.getDisplay = function() {
         return display;
@@ -290,8 +294,11 @@ Guacamole.Client = function(tunnel) {
     /**
      * Sends the current size of the screen.
      * 
-     * @param {Number} width The width of the screen.
-     * @param {Number} height The height of the screen.
+     * @param {!number} width
+     *     The width of the screen.
+     *
+     * @param {!number} height
+     *     The height of the screen.
      */
     this.sendSize = function(width, height) {
 
@@ -307,9 +314,11 @@ Guacamole.Client = function(tunnel) {
      * Sends a key event having the given properties as if the user
      * pressed or released a key.
      * 
-     * @param {Boolean} pressed Whether the key is pressed (true) or released
-     *                          (false).
-     * @param {Number} keysym The keysym of the key being pressed or released.
+     * @param {!boolean} pressed
+     *     Whether the key is pressed (true) or released (false).
+     *
+     * @param {!number} keysym
+     *     The keysym of the key being pressed or released.
      */
     this.sendKeyEvent = function(pressed, keysym) {
         // Do not send requests if not connected
@@ -323,19 +332,33 @@ Guacamole.Client = function(tunnel) {
      * Sends a mouse event having the properties provided by the given mouse
      * state.
      * 
-     * @param {Guacamole.Mouse.State} mouseState The state of the mouse to send
-     *                                           in the mouse event.
+     * @param {!Guacamole.Mouse.State} mouseState
+     *     The state of the mouse to send in the mouse event.
+     *
+     * @param {boolean} [applyDisplayScale=false]
+     *     Whether the provided mouse state uses local display units, rather
+     *     than remote display units, and should be scaled to match the
+     *     {@link Guacamole.Display}.
      */
-    this.sendMouseState = function(mouseState) {
+    this.sendMouseState = function sendMouseState(mouseState, applyDisplayScale) {
 
         // Do not send requests if not connected
         if (!isConnected())
             return;
 
+        var x = mouseState.x;
+        var y = mouseState.y;
+
+        // Translate for display units if requested
+        if (applyDisplayScale) {
+            x /= display.getScale();
+            y /= display.getScale();
+        }
+
         // Update client-side cursor
         display.moveCursor(
-            Math.floor(mouseState.x),
-            Math.floor(mouseState.y)
+            Math.floor(x),
+            Math.floor(y)
         );
 
         // Build mask
@@ -347,31 +370,39 @@ Guacamole.Client = function(tunnel) {
         if (mouseState.down)   buttonMask |= 16;
 
         // Send message
-        tunnel.sendMessage("mouse", Math.floor(mouseState.x), Math.floor(mouseState.y), buttonMask);
+        tunnel.sendMessage("mouse", Math.floor(x), Math.floor(y), buttonMask);
     };
 
     /**
-     * Sets the clipboard of the remote client to the given text data.
+     * Sends a touch event having the properties provided by the given touch
+     * state.
      *
-     * @deprecated Use createClipboardStream() instead. 
-     * @param {String} data The data to send as the clipboard contents.
+     * @param {!Guacamole.Touch.State} touchState
+     *     The state of the touch contact to send in the touch event.
+     *
+     * @param {boolean} [applyDisplayScale=false]
+     *     Whether the provided touch state uses local display units, rather
+     *     than remote display units, and should be scaled to match the
+     *     {@link Guacamole.Display}.
      */
-    this.setClipboard = function(data) {
+    this.sendTouchState = function sendTouchState(touchState, applyDisplayScale) {
 
         // Do not send requests if not connected
         if (!isConnected())
             return;
 
-        // Open stream
-        var stream = guac_client.createClipboardStream("text/plain");
-        var writer = new Guacamole.StringWriter(stream);
+        var x = touchState.x;
+        var y = touchState.y;
 
-        // Send text chunks
-        for (var i=0; i<data.length; i += 4096)
-            writer.sendText(data.substring(i, i+4096));
+        // Translate for display units if requested
+        if (applyDisplayScale) {
+            x /= display.getScale();
+            y /= display.getScale();
+        }
 
-        // Close stream
-        writer.sendEnd();
+        tunnel.sendMessage('touch', touchState.id, Math.floor(x), Math.floor(y),
+            Math.floor(touchState.radiusX), Math.floor(touchState.radiusY),
+            touchState.angle, touchState.force);
 
     };
 
@@ -384,7 +415,7 @@ Guacamole.Client = function(tunnel) {
      * instruction which creates the stream, such as a "clipboard", "file", or
      * "pipe" instruction.
      *
-     * @returns {Guacamole.OutputStream}
+     * @returns {!Guacamole.OutputStream}
      *     A new Guacamole.OutputStream with a newly-allocated index and
      *     associated with this Guacamole.Client.
      */
@@ -404,11 +435,11 @@ Guacamole.Client = function(tunnel) {
      * mimetype will be sent along the returned stream. The instruction
      * necessary to create this stream will automatically be sent.
      *
-     * @param {String} mimetype
+     * @param {!string} mimetype
      *     The mimetype of the audio data that will be sent along the returned
      *     stream.
      *
-     * @return {Guacamole.OutputStream}
+     * @return {!Guacamole.OutputStream}
      *     The created audio stream.
      */
     this.createAudioStream = function(mimetype) {
@@ -425,9 +456,14 @@ Guacamole.Client = function(tunnel) {
      * filename. The instruction necessary to create this stream will
      * automatically be sent.
      *
-     * @param {String} mimetype The mimetype of the file being sent.
-     * @param {String} filename The filename of the file being sent.
-     * @return {Guacamole.OutputStream} The created file stream.
+     * @param {!string} mimetype
+     *     The mimetype of the file being sent.
+     *
+     * @param {!string} filename
+     *     The filename of the file being sent.
+     *
+     * @return {!Guacamole.OutputStream}
+     *     The created file stream.
      */
     this.createFileStream = function(mimetype, filename) {
 
@@ -442,9 +478,14 @@ Guacamole.Client = function(tunnel) {
      * Opens a new pipe for writing, having the given name and mimetype. The
      * instruction necessary to create this stream will automatically be sent.
      *
-     * @param {String} mimetype The mimetype of the data being sent.
-     * @param {String} name The name of the pipe.
-     * @return {Guacamole.OutputStream} The created file stream.
+     * @param {!string} mimetype
+     *     The mimetype of the data being sent.
+     *
+     * @param {!string} name
+     *     The name of the pipe.
+     *
+     * @return {!Guacamole.OutputStream}
+     *     The created file stream.
      */
     this.createPipeStream = function(mimetype, name) {
 
@@ -459,9 +500,14 @@ Guacamole.Client = function(tunnel) {
      * Opens a new clipboard object for writing, having the given mimetype. The
      * instruction necessary to create this stream will automatically be sent.
      *
-     * @param {String} mimetype The mimetype of the data being sent.
-     * @param {String} name The name of the pipe.
-     * @return {Guacamole.OutputStream} The created file stream.
+     * @param {!string} mimetype
+     *     The mimetype of the data being sent.
+     *
+     * @param {!string} name
+     *     The name of the pipe.
+     *
+     * @return {!Guacamole.OutputStream}
+     *     The created file stream.
      */
     this.createClipboardStream = function(mimetype) {
 
@@ -473,22 +519,47 @@ Guacamole.Client = function(tunnel) {
     };
 
     /**
+     * Opens a new argument value stream for writing, having the given
+     * parameter name and mimetype, requesting that the connection parameter
+     * with the given name be updated to the value described by the contents
+     * of the following stream. The instruction necessary to create this stream
+     * will automatically be sent.
+     *
+     * @param {!string} mimetype
+     *     The mimetype of the data being sent.
+     *
+     * @param {!string} name
+     *     The name of the connection parameter to attempt to update.
+     *
+     * @return {!Guacamole.OutputStream}
+     *     The created argument value stream.
+     */
+    this.createArgumentValueStream = function createArgumentValueStream(mimetype, name) {
+
+        // Allocate and associate stream with argument value metadata
+        var stream = guac_client.createOutputStream();
+        tunnel.sendMessage("argv", stream.index, mimetype, name);
+        return stream;
+
+    };
+
+    /**
      * Creates a new output stream associated with the given object and having
      * the given mimetype and name. The legality of a mimetype and name is
      * dictated by the object itself. The instruction necessary to create this
      * stream will automatically be sent.
      *
-     * @param {Number} index
+     * @param {!number} index
      *     The index of the object for which the output stream is being
      *     created.
      *
-     * @param {String} mimetype
+     * @param {!string} mimetype
      *     The mimetype of the data which will be sent to the output stream.
      *
-     * @param {String} name
+     * @param {!string} name
      *     The defined name of an output stream within the given object.
      *
-     * @returns {Guacamole.OutputStream}
+     * @returns {!Guacamole.OutputStream}
      *     An output stream which will write blobs to the named output stream
      *     of the given object.
      */
@@ -505,11 +576,11 @@ Guacamole.Client = function(tunnel) {
      * Requests read access to the input stream having the given name. If
      * successful, a new input stream will be created.
      *
-     * @param {Number} index
+     * @param {!number} index
      *     The index of the object from which the input stream is being
      *     requested.
      *
-     * @param {String} name
+     * @param {!string} name
      *     The name of the input stream to request.
      */
     this.requestObjectInputStream = function requestObjectInputStream(index, name) {
@@ -524,11 +595,14 @@ Guacamole.Client = function(tunnel) {
     /**
      * Acknowledge receipt of a blob on the stream with the given index.
      * 
-     * @param {Number} index The index of the stream associated with the
-     *                       received blob.
-     * @param {String} message A human-readable message describing the error
-     *                         or status.
-     * @param {Number} code The error code, if any, or 0 for success.
+     * @param {!number} index
+     *     The index of the stream associated with the received blob.
+     *
+     * @param {!string} message
+     *     A human-readable message describing the error or status.
+     *
+     * @param {!number} code
+     *     The error code, if any, or 0 for success.
      */
     this.sendAck = function(index, message, code) {
 
@@ -542,8 +616,11 @@ Guacamole.Client = function(tunnel) {
     /**
      * Given the index of a file, writes a blob of data to that file.
      * 
-     * @param {Number} index The index of the file to write to.
-     * @param {String} data Base64-encoded data to write to the file.
+     * @param {!number} index
+     *     The index of the file to write to.
+     *
+     * @param {!string} data
+     *     Base64-encoded data to write to the file.
      */
     this.sendBlob = function(index, data) {
 
@@ -560,7 +637,7 @@ Guacamole.Client = function(tunnel) {
      * stream is closed, and the index will be made available for reuse in
      * future streams.
      * 
-     * @param {Number} index
+     * @param {!number} index
      *     The index of the stream to end.
      */
     this.endStream = function(index) {
@@ -584,7 +661,8 @@ Guacamole.Client = function(tunnel) {
      * Fired whenever the state of this Guacamole.Client changes.
      * 
      * @event
-     * @param {Number} state The new state of the client.
+     * @param {!number} state
+     *     The new state of the client.
      */
     this.onstatechange = null;
 
@@ -592,7 +670,8 @@ Guacamole.Client = function(tunnel) {
      * Fired when the remote client sends a name update.
      * 
      * @event
-     * @param {String} name The new name of this client.
+     * @param {!string} name
+     *     The new name of this client.
      */
     this.onname = null;
 
@@ -601,8 +680,8 @@ Guacamole.Client = function(tunnel) {
      * is being closed.
      * 
      * @event
-     * @param {Guacamole.Status} status A status object which describes the
-     *                                  error.
+     * @param {!Guacamole.Status} status
+     *     A status object which describes the error.
      */
     this.onerror = null;
 
@@ -611,10 +690,10 @@ Guacamole.Client = function(tunnel) {
      * handler will contain its own event handlers for received data.
      *
      * @event
-     * @param {Guacamole.InputStream} stream
+     * @param {!Guacamole.InputStream} stream
      *     The stream that will receive audio data from the server.
      *
-     * @param {String} mimetype
+     * @param {!string} mimetype
      *     The mimetype of the audio data which will be received.
      *
      * @return {Guacamole.AudioPlayer}
@@ -630,15 +709,15 @@ Guacamole.Client = function(tunnel) {
      * handler will contain its own event handlers for received data.
      *
      * @event
-     * @param {Guacamole.InputStream} stream
+     * @param {!Guacamole.InputStream} stream
      *     The stream that will receive video data from the server.
      *
-     * @param {Guacamole.Display.VisibleLayer} layer
+     * @param {!Guacamole.Display.VisibleLayer} layer
      *     The destination layer on which the received video data should be
      *     played. It is the responsibility of the Guacamole.VideoPlayer
      *     implementation to play the received data within this layer.
      *
-     * @param {String} mimetype
+     * @param {!string} mimetype
      *     The mimetype of the video data which will be received.
      *
      * @return {Guacamole.VideoPlayer}
@@ -650,12 +729,45 @@ Guacamole.Client = function(tunnel) {
     this.onvideo = null;
 
     /**
+     * Fired when the remote client is explicitly declaring the level of
+     * multi-touch support provided by a particular display layer.
+     *
+     * @event
+     * @param {!Guacamole.Display.VisibleLayer} layer
+     *     The layer whose multi-touch support level is being declared.
+     *
+     * @param {!number} touches
+     *     The maximum number of simultaneous touches supported by the given
+     *     layer, where 0 indicates that touch events are not supported at all.
+     */
+    this.onmultitouch = null;
+
+    /**
+     * Fired when the current value of a connection parameter is being exposed
+     * by the server.
+     *
+     * @event
+     * @param {!Guacamole.InputStream} stream
+     *     The stream that will receive connection parameter data from the
+     *     server.
+     *
+     * @param {!string} mimetype
+     *     The mimetype of the data which will be received.
+     *
+     * @param {!string} name
+     *     The name of the connection parameter whose value is being exposed.
+     */
+    this.onargv = null;
+
+    /**
      * Fired when the clipboard of the remote client is changing.
      * 
      * @event
-     * @param {Guacamole.InputStream} stream The stream that will receive
-     *                                       clipboard data from the server.
-     * @param {String} mimetype The mimetype of the data which will be received.
+     * @param {!Guacamole.InputStream} stream
+     *     The stream that will receive clipboard data from the server.
+     *
+     * @param {!string} mimetype
+     *     The mimetype of the data which will be received.
      */
     this.onclipboard = null;
 
@@ -664,10 +776,14 @@ Guacamole.Client = function(tunnel) {
      * handler will contain its own event handlers for received data.
      * 
      * @event
-     * @param {Guacamole.InputStream} stream The stream that will receive data
-     *                                       from the server.
-     * @param {String} mimetype The mimetype of the file received.
-     * @param {String} filename The name of the file received.
+     * @param {!Guacamole.InputStream} stream
+     *     The stream that will receive data from the server.
+     *
+     * @param {!string} mimetype
+     *     The mimetype of the file received.
+     *
+     * @param {!string} filename
+     *     The name of the file received.
      */
     this.onfile = null;
 
@@ -677,10 +793,10 @@ Guacamole.Client = function(tunnel) {
      * requesting and handling data.
      *
      * @event
-     * @param {Guacamole.Object} object
+     * @param {!Guacamole.Object} object
      *     The created filesystem object.
      *
-     * @param {String} name
+     * @param {!string} name
      *     The name of the filesystem.
      */
     this.onfilesystem = null;
@@ -690,12 +806,28 @@ Guacamole.Client = function(tunnel) {
      * handler will contain its own event handlers for received data;
      * 
      * @event
-     * @param {Guacamole.InputStream} stream The stream that will receive data
-     *                                       from the server.
-     * @param {String} mimetype The mimetype of the data which will be received.
-     * @param {String} name The name of the pipe.
+     * @param {!Guacamole.InputStream} stream
+     *     The stream that will receive data from the server.
+     *
+     * @param {!string} mimetype
+     *     The mimetype of the data which will be received.
+     *
+     * @param {!string} name
+     *     The name of the pipe.
      */
     this.onpipe = null;
+    
+    /**
+     * Fired when a "required" instruction is received. A required instruction
+     * indicates that additional parameters are required for the connection to
+     * continue, such as user credentials.
+     * 
+     * @event
+     * @param {!string[]} parameters
+     *      The names of the connection parameters that are required to be
+     *      provided for the connection to continue.
+     */
+    this.onrequired = null;
 
     /**
      * Fired whenever a sync instruction is received from the server, indicating
@@ -703,8 +835,8 @@ Guacamole.Client = function(tunnel) {
      * has sent any results.
      * 
      * @event
-     * @param {Number} timestamp The timestamp associated with the sync
-     *                           instruction.
+     * @param {!number} timestamp
+     *     The timestamp associated with the sync instruction.
      */
     this.onsync = null;
 
@@ -714,10 +846,10 @@ Guacamole.Client = function(tunnel) {
      * the default layer, and negative indices refer to buffers.
      *
      * @private
-     * @param {Number} index
+     * @param {!number} index
      *     The index of the layer to retrieve.
      *
-     * @return {Guacamole.Display.VisibleLayer|Guacamole.Layer}
+     * @return {!(Guacamole.Display.VisibleLayer|Guacamole.Layer)}
      *     The layer having the given index.
      */
     var getLayer = function getLayer(index) {
@@ -748,10 +880,10 @@ Guacamole.Client = function(tunnel) {
      * Positive indices refer to visible layers, an index of zero refers to the
      * default layer, and negative indices refer to buffers.
      *
-     * @param {Guacamole.Display.VisibleLayer|Guacamole.Layer} layer
+     * @param {!(Guacamole.Display.VisibleLayer|Guacamole.Layer)} layer
      *     The layer whose index should be determined.
      *
-     * @returns {Number}
+     * @returns {number}
      *     The index of the given layer, or null if no such layer is associated
      *     with this client.
      */
@@ -790,12 +922,22 @@ Guacamole.Client = function(tunnel) {
 
     /**
      * Handlers for all defined layer properties.
+     *
      * @private
+     * @type {!Object.<string, function>}
      */
     var layerPropertyHandlers = {
 
         "miter-limit": function(layer, value) {
             display.setMiterLimit(layer, parseFloat(value));
+        },
+
+        "multi-touch" : function layerSupportsMultiTouch(layer, value) {
+
+            // Process "multi-touch" property only for true visible layers (not off-screen buffers)
+            if (guac_client.onmultitouch && layer instanceof Guacamole.Display.VisibleLayer)
+                guac_client.onmultitouch(layer, parseInt(value));
+
         }
 
     };
@@ -803,7 +945,9 @@ Guacamole.Client = function(tunnel) {
     /**
      * Handlers for all instruction opcodes receivable by a Guacamole protocol
      * client.
+     *
      * @private
+     * @type {!Object.<string, function>}
      */
     var instructionHandlers = {
 
@@ -843,6 +987,24 @@ Guacamole.Client = function(tunnel) {
             var negative = parseInt(parameters[6]);
 
             display.arc(layer, x, y, radius, startAngle, endAngle, negative != 0);
+
+        },
+
+        "argv": function(parameters) {
+
+            var stream_index = parseInt(parameters[0]);
+            var mimetype = parameters[1];
+            var name = parameters[2];
+
+            // Create stream
+            if (guac_client.onargv) {
+                var stream = streams[stream_index] = new Guacamole.InputStream(guac_client, stream_index);
+                guac_client.onargv(stream, mimetype, name);
+            }
+
+            // Otherwise, unsupported
+            else
+                guac_client.sendAck(stream_index, "Receiving argument values unsupported", 0x0100);
 
         },
 
@@ -1155,13 +1317,10 @@ Guacamole.Client = function(tunnel) {
 
             // Create stream
             var stream = streams[stream_index] = new Guacamole.InputStream(guac_client, stream_index);
-            var reader = new Guacamole.DataURIReader(stream, mimetype);
 
-            // Draw image when stream is complete
-            reader.onend = function drawImageBlob() {
-                display.setChannelMask(layer, channelMask);
-                display.draw(layer, x, y, reader.getURI());
-            };
+            // Draw received contents once decoded
+            display.setChannelMask(layer, channelMask);
+            display.drawStream(layer, x, y, stream, mimetype);
 
         },
 
@@ -1304,6 +1463,10 @@ Guacamole.Client = function(tunnel) {
 
             display.rect(layer, x, y, w, h);
 
+        },
+                
+        "required": function required(parameters) {
+            if (guac_client.onrequired) guac_client.onrequired(parameters);
         },
         
         "reset": function(parameters) {
@@ -1512,9 +1675,12 @@ Guacamole.Client = function(tunnel) {
      * Connects the underlying tunnel of this Guacamole.Client, passing the
      * given arbitrary data to the tunnel during the connection process.
      *
-     * @param data Arbitrary connection data to be sent to the underlying
-     *             tunnel during the connection process.
-     * @throws {Guacamole.Status} If an error occurs during connection.
+     * @param {string} data
+     *     Arbitrary connection data to be sent to the underlying tunnel during
+     *     the connection process.
+     *
+     * @throws {!Guacamole.Status}
+     *     If an error occurs during connection.
      */
     this.connect = function(data) {
 
@@ -1540,7 +1706,9 @@ Guacamole.Client = function(tunnel) {
 
 /**
  * Map of all Guacamole binary raster operations to transfer functions.
+ *
  * @private
+ * @type {!Object.<number, function>}
  */
 Guacamole.Client.DefaultTransferFunction = {
 

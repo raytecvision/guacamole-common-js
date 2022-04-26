@@ -20,31 +20,13 @@
 var Guacamole = Guacamole || {};
 
 /**
- * A reader which automatically handles the given input stream, returning
- * strictly text data. Note that this object will overwrite any installed event
- * handlers on the given Guacamole.InputStream.
- * 
+ * Parser that decodes UTF-8 text from a series of provided ArrayBuffers.
+ * Multi-byte characters that continue from one buffer to the next are handled
+ * correctly.
+ *
  * @constructor
- * @param {!Guacamole.InputStream} stream
- *     The stream that data will be read from.
  */
-Guacamole.StringReader = function(stream) {
-
-    /**
-     * Reference to this Guacamole.InputStream.
-     *
-     * @private
-     * @type {!Guacamole.StringReader}
-     */
-    var guac_reader = this;
-
-    /**
-     * Wrapped Guacamole.ArrayBufferReader.
-     *
-     * @private
-     * @type {!Guacamole.ArrayBufferReader}
-     */
-    var array_reader = new Guacamole.ArrayBufferReader(stream);
+Guacamole.UTF8Parser = function UTF8Parser() {
 
     /**
      * The number of bytes remaining for the current codepoint.
@@ -52,7 +34,7 @@ Guacamole.StringReader = function(stream) {
      * @private
      * @type {!number}
      */
-    var bytes_remaining = 0;
+    var bytesRemaining = 0;
 
     /**
      * The current codepoint value, as calculated from bytes read so far.
@@ -63,19 +45,22 @@ Guacamole.StringReader = function(stream) {
     var codepoint = 0;
 
     /**
-     * Decodes the given UTF-8 data into a Unicode string. The data may end in
-     * the middle of a multibyte character.
-     * 
+     * Decodes the given UTF-8 data into a Unicode string, returning a string
+     * containing all complete UTF-8 characters within the provided data. The
+     * data may end in the middle of a multi-byte character, in which case the
+     * complete character will be returned from a later call to decode() after
+     * enough bytes have been provided.
+     *
      * @private
      * @param {!ArrayBuffer} buffer
      *     Arbitrary UTF-8 data.
      *
      * @return {!string}
-     *     A decoded Unicode string.
+     *     The decoded Unicode string.
      */
-    function __decode_utf8(buffer) {
+    this.decode = function decode(buffer) {
 
-        var text = "";
+        var text = '';
 
         var bytes = new Uint8Array(buffer);
         for (var i=0; i<bytes.length; i++) {
@@ -84,7 +69,7 @@ Guacamole.StringReader = function(stream) {
             var value = bytes[i];
 
             // Start new codepoint if nothing yet read
-            if (bytes_remaining === 0) {
+            if (bytesRemaining === 0) {
 
                 // 1 byte (0xxxxxxx)
                 if ((value | 0x7F) === 0x7F)
@@ -93,24 +78,24 @@ Guacamole.StringReader = function(stream) {
                 // 2 byte (110xxxxx)
                 else if ((value | 0x1F) === 0xDF) {
                     codepoint = value & 0x1F;
-                    bytes_remaining = 1;
+                    bytesRemaining = 1;
                 }
 
                 // 3 byte (1110xxxx)
                 else if ((value | 0x0F )=== 0xEF) {
                     codepoint = value & 0x0F;
-                    bytes_remaining = 2;
+                    bytesRemaining = 2;
                 }
 
                 // 4 byte (11110xxx)
                 else if ((value | 0x07) === 0xF7) {
                     codepoint = value & 0x07;
-                    bytes_remaining = 3;
+                    bytesRemaining = 3;
                 }
 
                 // Invalid byte
                 else
-                    text += "\uFFFD";
+                    text += '\uFFFD';
 
             }
 
@@ -118,57 +103,24 @@ Guacamole.StringReader = function(stream) {
             else if ((value | 0x3F) === 0xBF) {
 
                 codepoint = (codepoint << 6) | (value & 0x3F);
-                bytes_remaining--;
+                bytesRemaining--;
 
                 // Write codepoint if finished
-                if (bytes_remaining === 0)
+                if (bytesRemaining === 0)
                     text += String.fromCharCode(codepoint);
 
             }
 
             // Invalid byte
             else {
-                bytes_remaining = 0;
-                text += "\uFFFD";
+                bytesRemaining = 0;
+                text += '\uFFFD';
             }
 
         }
 
         return text;
 
-    }
-
-    // Receive blobs as strings
-    array_reader.ondata = function(buffer) {
-
-        // Decode UTF-8
-        var text = __decode_utf8(buffer);
-
-        // Call handler, if present
-        if (guac_reader.ontext)
-            guac_reader.ontext(text);
-
     };
-
-    // Simply call onend when end received
-    array_reader.onend = function() {
-        if (guac_reader.onend)
-            guac_reader.onend();
-    };
-
-    /**
-     * Fired once for every blob of text data received.
-     * 
-     * @event
-     * @param {!string} text
-     *     The data packet received.
-     */
-    this.ontext = null;
-
-    /**
-     * Fired once this stream is finished and no further data will be written.
-     * @event
-     */
-    this.onend = null;
 
 };

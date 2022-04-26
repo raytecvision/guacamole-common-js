@@ -1,6 +1,6 @@
 {
   "name": "@raytecvision/guacamole-common-js",
-  "version": "0.0.1",
+  "version": "1.4.0",
   "description": "guacamole-common-js TypeScript definitions as an NPM module",
   "main": "guacamole.js",
   "types": "guacamole.d.ts",
