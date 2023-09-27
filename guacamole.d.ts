@@ -1,4 +1,4 @@
-declare module '@raytecvision/guacamole-common-js' {
+declare module 'guacamole-common-ts' {
 
     /**
      * Dynamic on-screen keyboard. Given the layout object for an on-screen
