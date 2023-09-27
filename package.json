@@ -1,13 +1,13 @@
 {
-  "name": "@raytecvision/guacamole-common-js",
-  "version": "1.4.0",
-  "description": "guacamole-common-js TypeScript definitions as an NPM module",
+  "name": "guacamole-common-ts",
+  "version": "0.1.2",
+  "description": "guacamole-common-ts is a TypeScript definitions as an NPM module for use with guacamole-lite-ts",
   "main": "guacamole.js",
   "types": "guacamole.d.ts",
   "scripts": {
     "build": "node build"
   },
-  "author": "",
+  "author": "Sean Kupiec <skkupiec2@msn.com>",
   "license": "MIT",
   "files": [
     "LICENSE",
@@ -16,11 +16,12 @@
     "tsconfig.json"
   ],
   "keywords": [
-    "guacamole"
+    "guacamole",
+    "angular",
+    "ts",
+    "typescript",
+    "types",
+    "guacamole-lite-ts"
   ],
-  "author": "Jamie Hall <hall@ill.eu>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/raytecvision/guacamole-common-js/issues"
-  },"homepage": "https://github.com/raytecvision/guacamole-common-js"
+  "homepage": "https://github.com/smeagol002/guacamole-common-ts"
 }
