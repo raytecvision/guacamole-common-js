@@ -1,5 +1,6 @@
-declare module 'guacamole-common-ts' {
+import { ManagerOptions, SocketOptions } from "socket.io-client";
 
+declare module 'guacamole-common-ts' {
     /**
      * Dynamic on-screen keyboard. Given the layout object for an on-screen
      * keyboard, this object will construct a clickable on-screen keyboard with its
@@ -648,8 +649,10 @@ declare module 'guacamole-common-ts' {
         constructor(tunnelURL: string);
     }
 
+    
     class SocketIOTunnel extends Tunnel {
-        constructor(url: string, connectionOptions: any, eventChannel: string);
+
+        constructor(url: string, connectionOptions: Partial<ManagerOptions & SocketOptions>, eventChannel: string);
         /** 
          * Return the socketio socket
          */

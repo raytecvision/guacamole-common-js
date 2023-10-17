@@ -1,5 +1,5 @@
 ; (function () {
-
+    const io = require("socket.io-client");
     var Guacamole = Guacamole || {};
 
     /**
@@ -12264,10 +12264,11 @@
      * @constructor
      * @augments Guacamole.Tunnel
      * @param {String} tunnelURL The URL of the SocketIO connection
-     * @param {String} tunnelURL The SocketIO event channel to receive and send data
+     * @param {String} connectionOptions SocketIO Connection options
+     * @param {String} eventChannel The SocketIO event channel to receive and send data
      */
     Guacamole.SocketIOTunnel = function (tunnelURL, connectionOptions, eventChannel) {
-
+        
         /**
          * Reference to this SocketIO tunnel.
          * @private
