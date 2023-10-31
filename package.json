@@ -1,6 +1,6 @@
 {
   "name": "guacamole-common-ts",
-  "version": "0.1.7-beta",
+  "version": "0.1.7-beta4",
   "description": "Guacamole TypeScript definitions as an NPM module for use with guacamole-lite-ts and guacamole-rd-ts",
   "main": "guacamole.js",
   "types": "guacamole.d.ts",

@@ -652,7 +652,7 @@ declare module 'guacamole-common-ts' {
     
     class SocketIOTunnel extends Tunnel {
 
-        constructor(url: string, connectionOptions: Partial<ManagerOptions & SocketOptions>, eventChannel: string);
+        constructor(url: string, connectionOptions: Partial<ManagerOptions & SocketOptions>);
         /** 
          * Return the socketio socket
          */
