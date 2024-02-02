@@ -639,16 +639,6 @@ declare module 'guacamole-common-ts' {
         setState(state: number): void;
     }
 
-    /**
-     * Guacamole Tunnel implemented over WebSocket via XMLHttpRequest.
-     */
-    class WebSocketTunnel extends Tunnel {
-        /**
-         * @param {String} tunnelURL The URL of the WebSocket tunneling service.
-         */
-        constructor(tunnelURL: string);
-    }
-
     
     class SocketIOTunnel extends Tunnel {
 
@@ -657,65 +647,6 @@ declare module 'guacamole-common-ts' {
          * Return the socketio socket
          */
         getSocket(): any;
-    }
-
-    /**
-     * Guacamole Tunnel which cycles between all specified tunnels until
-     * no tunnels are left. Another tunnel is used if an error occurs but
-     * no instructions have been received. If an instruction has been
-     * received, or no tunnels remain, the error is passed directly out
-     * through the onerror handler (if defined).
-     */
-    class ChainedTunnel extends Tunnel {
-        /**
-         * @param {...*} tunnelChain
-         *     The tunnels to use, in order of priority.
-         */
-        constructor(tunnelChain: any);
-    }
-
-    /**
-     * Guacamole Tunnel implemented over HTTP via XMLHttpRequest.
-     */
-    class HTTPTunnel extends Tunnel {
-        /**
-         * @param {String} tunnelURL
-         *     The URL of the HTTP tunneling service.
-         *
-         * @param {Boolean} [crossDomain=false]
-         *     Whether tunnel requests will be cross-domain, and thus must use CORS
-         *     mechanisms and headers. By default, it is assumed that tunnel requests
-         *     will be made to the same domain.
-         *
-         * @param {Object} [extraTunnelHeaders={}]
-         *     Key value pairs containing the header names and values of any additional
-         *     headers to be sent in tunnel requests. By default, no extra headers will
-         *     be added.
-         */
-        constructor(tunnelURL: string, crossDomain: boolean, extraTunnelHeaders: any);
-    }
-
-    /**
-     * Guacamole Tunnel which replays a Guacamole protocol dump from a static file
-     * received via HTTP. Instructions within the file are parsed and handled as
-     * quickly as possible, while the file is being downloaded.
-     */
-    class StaticHTTPTunnel extends Tunnel {
-        /**
-         * @param {String} url
-         *     The URL of a Guacamole protocol dump.
-         *
-         * @param {Boolean} [crossDomain=false]
-         *     Whether tunnel requests will be cross-domain, and thus must use CORS
-         *     mechanisms and headers. By default, it is assumed that tunnel requests
-         *     will be made to the same domain.
-         *
-         * @param {Object} [extraTunnelHeaders={}]
-         *     Key value pairs containing the header names and values of any additional
-         *     headers to be sent in tunnel requests. By default, no extra headers will
-         *     be added.
-         */
-        constructor(url: string, crossDomain: boolean, extraTunnelHeaders: any);
     }
 
     /**
